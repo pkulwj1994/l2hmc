@@ -79,4 +79,4 @@ def ais_estimate(
         return logmeanexp(w[-1]), tf.reduce_mean(alpha)
     
     list_w = tf.split(w[-1], num_splits, axis=0)
-    return tf.reduce_sum(tf.stack(map(logmeanexp, list_w), axis=0), 0), tf.reduce_mean(alpha)
+    return tf.reduce_sum(tf.stack(list(map(logmeanexp, list_w)), axis=0), 0), tf.reduce_mean(alpha)

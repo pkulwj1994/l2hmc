@@ -20,7 +20,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import time, sys, string
+import time, sys, string, os
 
 import tensorflow as tf
 import numpy as np
@@ -92,13 +92,14 @@ def main(_):
     hps_values = hps.values()
     del(hps_values['epoch'])
 
-    train_folder = string.join(
-        [
-            str(k)+'='+str(hps_values[k]) 
-            for k in hps_values
-        ],
-        ',',
-    )
+    # train_folder = string.join(
+    #     [
+    #         str(k)+'='+str(hps_values[k]) 
+    #         for k in hps_values
+    #     ], ',')
+    train_folder = ''
+    for k in hps_values:
+      train_folder += (str(k)+'='+str(hps_values[k]))
 
     logdir = 'logs/baseline/%s' % train_folder
 
@@ -176,7 +177,7 @@ def main(_):
     for e in range(hps.epoch):
         x_train = binarize_and_shuffle(float_x_train)
         
-        for t in range(batch_per_epoch):
+        for t in range(int(batch_per_epoch)):
             start = t * hps.batch_size
             end = start + hps.batch_size
             
@@ -189,8 +190,8 @@ def main(_):
             fetched = sess.run(fetches, {inp: batch})
             
             if t % 50 == 0:
-                print '%d/%d::ELBO: %.2e::Time: %.2e' \
-                    % (t, batch_per_epoch, fetched[0], time.time()-time0)
+                print('%d/%d::ELBO: %.2e::Time: %.2e' \
+                    % (t, batch_per_epoch, fetched[0], time.time()-time0))
                 time0 = time.time()
 
             writer.add_summary(fetched[1], global_step=counter)

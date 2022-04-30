@@ -26,14 +26,14 @@ import numpy as np
 TF_FLOAT = tf.float32
 
 def propose(x, dynamics, init_v=None, aux=None, do_mh_step=False, log_jac=False):
-	if dynamics.hmc:
-		Lx, Lv, px = dynamics.forward(x, init_v=init_v, aux=aux)
-		return Lx, Lv, px, [tf_accept(x, Lx, px)]
-	else:
-		# sample mask for forward/backward
-		mask = tf.cast(tf.random_uniform((tf.shape(x)[0], 1), maxval=2, dtype=tf.int32), TF_FLOAT)
-		Lx1, Lv1, px1 = dynamics.forward(x, aux=aux, log_jac=log_jac)
-		Lx2, Lv2, px2 = dynamics.backward(x, aux=aux, log_jac=log_jac)
+  if dynamics.hmc:
+    Lx, Lv, px = dynamics.forward(x, init_v=init_v, aux=aux)
+    return Lx, Lv, px, [tf_accept(x, Lx, px)]
+  else:
+    # sample mask for forward/backward
+    mask = tf.cast(tf.random_uniform((tf.shape(x)[0], 1), maxval=2, dtype=tf.int32), TF_FLOAT)
+    Lx1, Lv1, px1 = dynamics.forward(x, aux=aux, log_jac=log_jac)
+    Lx2, Lv2, px2 = dynamics.backward(x, aux=aux, log_jac=log_jac)
 
         Lx = mask * Lx1 + (1 - mask) * Lx2
 
@@ -83,4 +83,3 @@ def chain_operator(init_x, dynamics, nb_steps, aux=None, init_v=None, do_mh_step
         outputs.append(tf_accept(init_x, final_x, p_accept))
 
     return final_x, final_v, p_accept, outputs
-    

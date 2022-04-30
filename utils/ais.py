@@ -24,8 +24,8 @@ from __future__ import print_function
 import tensorflow as tf
 import numpy as np
 
-from dynamics import Dynamics
-from func_utils import tf_accept
+from utils.dynamics import Dynamics
+from utils.func_utils import tf_accept
 
 def ais_estimate(
         init_energy, 

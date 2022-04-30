@@ -324,8 +324,8 @@ def main(_):
             fetched = sess.run(fetches, {inp: batch})
                         
             if t % 50 == 0:
-                print 'Step:%d::%d/%d::ELBO: %.3e::Loss sampler: %.3e:: Log prob: %.3e:: Lr: %g:: Time: %.2e' \
-                    % (fetched[4], t, batch_per_epoch, fetched[0], fetched[1], fetched[2], fetched[-2], time.time()-time0)
+                print('Step:%d::%d/%d::ELBO: %.3e::Loss sampler: %.3e:: Log prob: %.3e:: Lr: %g:: Time: %.2e' \
+                    % (fetched[4], t, batch_per_epoch, fetched[0], fetched[1], fetched[2], fetched[-2], time.time()-time0))
                 time0 = time.time()
 
             writer.add_summary(fetched[3], global_step=counter)
@@ -337,13 +337,13 @@ def main(_):
 
     for AS in [64, 256, 1024, 4096, 8192]:
         cmd = 'python eval_vae.py --path "%s/" --split %s --anneal_steps %d'
-        print 'Train fold evaluation. AS steps: %d' % AS
+        print('Train fold evaluation. AS steps: %d' % AS)
         os.system(cmd % (logdir, 'train', AS))
 
-        print 'Test fold evaluation. AS steps: %d' % AS
+        print('Test fold evaluation. AS steps: %d' % AS)
         os.system(cmd % (logdir, 'test', AS))
 
-    print 'Sampler eval'
+    print('Sampler eval')
     os.system('python eval_sampler.py --path "%s"' % logdir)
 
 if __name__ == '__main__':

@@ -303,7 +303,7 @@ def main(_):
     for e in range(hps.epoch):
         x_train = binarize_and_shuffle(float_x_train)
         
-        for t in range(batch_per_epoch):
+        for t in range(int(batch_per_epoch)):
             start = t * hps.batch_size
             end = start + hps.batch_size
             

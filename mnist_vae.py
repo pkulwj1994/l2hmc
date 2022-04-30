@@ -74,13 +74,9 @@ def main(_):
     del(hps_values['epoch'])
     del(hps_values['eval_samples_every'])
 
-    train_folder = string.join(
-        [
-            str(k)+'='+str(hps_values[k]) 
-            for k in hps_values
-        ],
-        ',',
-    )
+    train_folder = ''
+    for k in hps_values:
+      train_folder += (str(k)+'='+str(hps_values[k]))
 
     logdir = 'logs/%s/%s' % (FLAGS.exp_id, train_folder)
 
@@ -348,4 +344,3 @@ def main(_):
 
 if __name__ == '__main__':
     tf.app.run(main)
-         
